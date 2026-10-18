@@ -855,14 +855,14 @@ function sanitizeChatToolHistory(messages, provider, model) {
 // merges, or rewrites a developer message.
 const QWEN38_TURN_ROLES = new Set(["user", "assistant", "tool"]);
 
-function qwen38SystemOrderIsLegal(messages) {
+function qwen38SystemOrderIsLegal(messages, systemAtIndexZero = false) {
   let systems = 0;
   let sawTurn = false;
-  for (const message of messages) {
+  for (const [index, message] of messages.entries()) {
     const role = message?.role;
     if (role === "system") {
       systems += 1;
-      if (systems > 1 || sawTurn) return false;
+      if (systems > 1 || sawTurn || (systemAtIndexZero && index !== 0)) return false;
     } else if (QWEN38_TURN_ROLES.has(role)) {
       sawTurn = true;
     }
@@ -886,10 +886,12 @@ function combineQwen38SystemContent(contents) {
 // mid-conversation end up hoisted ahead of the first turn, so the model reads
 // them as opening context instead of as a later correction. That is a real
 // change in meaning, accepted only because this endpoint answers the original
-// ordering with a 400 and no answer at all. Every non-system message keeps its
-// position, and the merged text keeps the callers' relative order.
-function normalizeQwen38SystemMessages(messages) {
-  if (!Array.isArray(messages) || qwen38SystemOrderIsLegal(messages)) return messages;
+// ordering with a 400 and no answer at all. Non-system messages keep their
+// relative order, and the merged text keeps the callers' relative order.
+// Hetzner Qwen3.6 uses the stricter index-zero placement; the default retains
+// the measured Qwen3.8 exemption for leading developer messages.
+function normalizeQwen38SystemMessages(messages, systemAtIndexZero = false) {
+  if (!Array.isArray(messages) || qwen38SystemOrderIsLegal(messages, systemAtIndexZero)) return messages;
   const rest = [];
   const contents = [];
   let first;
@@ -909,8 +911,10 @@ function normalizeQwen38SystemMessages(messages) {
   }
   const firstTurn = rest.findIndex((message) => QWEN38_TURN_ROLES.has(message?.role));
   // Ahead of the first turn, and no earlier than where the caller's own first
-  // system message sat -- so a leading `developer` message keeps its lead.
-  const insertAt = firstTurn === -1 ? firstSystemSlot : Math.min(firstSystemSlot, firstTurn);
+  // system message sat -- so a leading `developer` message keeps its lead
+  // unless the endpoint explicitly requires the system message at index zero.
+  const insertAt = systemAtIndexZero ? 0 :
+    firstTurn === -1 ? firstSystemSlot : Math.min(firstSystemSlot, firstTurn);
   const merged = { ...first, content: combineQwen38SystemContent(contents) };
   return [...rest.slice(0, insertAt), merged, ...rest.slice(insertAt)];
 }
@@ -1221,6 +1225,15 @@ function normalizeBody(buffer, contentType, route) {
     }
   }
   if (Array.isArray(payload.messages)) {
+    // Hetzner's Qwen3.6 template rejects repeated/late system instructions
+    // from a native Codex builder with "System message must be at the
+    // beginning." Coalesce them at index zero, retaining their relative
+    // content order and every non-system message. This changes when late
+    // instructions are read, but prevents the observed pre-inference 400.
+    // Do not infer the same restriction for other models or providers.
+    if (provider.id === "hetzner" && model.upstreamModel === "Qwen/Qwen3.6-35B-A3B-FP8") {
+      payload.messages = normalizeQwen38SystemMessages(payload.messages, true);
+    }
     payload.messages = sanitizeChatToolHistory(payload.messages, provider, model);
     if (usesNativeChatReasoning(model)) {
       payload.messages = restoreNativeReasoningContent(payload.messages);
