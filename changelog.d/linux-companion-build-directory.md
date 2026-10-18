@@ -1,0 +1,1 @@
+- **Linux companion packaging now runs from the Control Center directory.** Building from the router checkout or another working directory now resolves the companion's Electron dependency and packaging configuration instead of the caller's package.

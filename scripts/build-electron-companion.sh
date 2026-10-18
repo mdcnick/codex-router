@@ -107,10 +107,10 @@ esac
   npm run check >&2
   npm test >&2
   npm run build >&2
+  CSC_IDENTITY_AUTO_DISCOVERY=false \
+    "$app_dir/node_modules/.bin/electron-builder" --linux dir --publish never \
+      "--config.directories.output=$staging_root" >&2
 )
-CSC_IDENTITY_AUTO_DISCOVERY=false \
-  "$app_dir/node_modules/.bin/electron-builder" --linux dir --publish never \
-    "--config.directories.output=$staging_root" >&2
 
 staged_dir="$staging_root/linux-unpacked"
 staged_binary="$staged_dir/codex-router-control-center"
