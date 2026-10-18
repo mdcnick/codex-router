@@ -1082,6 +1082,7 @@ struct ProviderIcon: View {
     if providerID.hasPrefix("commandcode") { return "commandcode" }
     if providerID == "github-copilot" { return "github-copilot" }
     if providerID == "chutes" { return "chutes" }
+    if providerID == "hetzner" { return "hetzner" }
     if providerID == "venice" { return "venice" }
     if providerID == "nousresearch" { return "nousresearch" }
     if providerID == "openrouter" { return "openrouter" }
@@ -1123,6 +1124,7 @@ struct ProviderIcon: View {
     if providerID == "github-copilot" { return "GitHub Copilot" }
     if providerID == "clinepass" { return "ClinePass" }
     if providerID == "chutes" { return "Chutes" }
+    if providerID == "hetzner" { return "Hetzner" }
     if providerID == "venice" { return "Venice" }
     if providerID == "nousresearch" { return "Nous Research" }
     if providerID == "openrouter" { return "OpenRouter" }

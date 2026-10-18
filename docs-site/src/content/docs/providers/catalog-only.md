@@ -12,6 +12,7 @@ often for the repository to pin and live-verify individual entries:
 | --- | --- | --- |
 | Groq | `groq` | `https://api.groq.com/openai/v1` |
 | Together AI | `together` | `https://api.together.xyz/v1` |
+| Hetzner | `hetzner` | `https://inference.hetzner.com/api/v1` |
 | Fireworks AI | `fireworks` | `https://api.fireworks.ai/inference/v1` |
 | Cerebras | `cerebras` | `https://api.cerebras.ai/v1` |
 | Mistral AI | `mistral` | `https://api.mistral.ai/v1` |
@@ -52,6 +53,22 @@ Add a key, then pick the models you want from the provider's live catalog:
 ./bin/model-router codex provider-key groq set
 ./bin/curate-models groq
 ```
+
+Hetzner uses an **Inference API token** from [Hetzner Experiments](https://experiments.hetzner.com/),
+not a Hetzner Cloud API token. Create it under **Inference → Create API Token**, then:
+
+```sh
+./bin/model-router codex provider-key hetzner set
+./bin/model-router codex providers enable hetzner
+./bin/curate-models hetzner
+```
+
+The key command prompts privately. `HETZNER_API_KEY` is the environment alternative;
+`HETZNER_API_BASE_URL` overrides the inference endpoint. The
+[official Inference API documentation](https://docs.hetzner.com/general/company-and-policy/experiments/inference/)
+identifies the live `/models` response as authoritative, so the router ships no
+fixed Hetzner model list. Account usage is unavailable through this integration;
+usage cards show router traffic and any quota headers returned by the provider.
 
 OrcaRouter's public catalog includes paid models and concrete zero-price model
 deployments. Inference still requires an OrcaRouter API key, including for free

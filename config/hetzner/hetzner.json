@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "providers": [
+    {
+      "id": "hetzner",
+      "displayName": "Hetzner",
+      "kind": "openai-compatible",
+      "ownedBy": "hetzner",
+      "baseUrl": "https://inference.hetzner.com/api/v1",
+      "baseUrlEnv": "HETZNER_API_BASE_URL",
+      "credential": {
+        "environment": [
+          "HETZNER_API_KEY"
+        ],
+        "file": "hetzner-api-key.secret",
+        "legacyFiles": [],
+        "keychainServices": [
+          "codex-router-hetzner"
+        ],
+        "prompt": "Hetzner Inference API token"
+      }
+    }
+  ]
+}

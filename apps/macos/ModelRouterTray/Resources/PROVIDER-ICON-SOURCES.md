@@ -45,3 +45,5 @@ container for whatever endpoints an operator puts in it, and its models come
 from different vendors, so any single logo would misattribute the rest.
 
 The marks remain trademarks of their respective owners.
+
+Hetzner: `hetzner.png` is the unmodified official favicon from https://www.hetzner.com/_resources/themes/hetzner/images/favicons/android-icon-192x192.png, discovered through https://www.hetzner.com/ on 2026-09-25.

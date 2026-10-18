@@ -15,6 +15,7 @@ import geminiLogo from "./assets/providers/gemini.svg";
 import githubCopilotLogo from "./assets/providers/github-copilot.svg";
 import googleLogo from "./assets/providers/google.svg";
 import groqLogo from "./assets/providers/groq.svg";
+import hetznerLogo from "./assets/providers/hetzner.png";
 import huggingFaceLogo from "./assets/providers/huggingface.svg";
 import kimiLogo from "./assets/providers/kimi.png";
 import kiloLogo from "./assets/providers/kilo.svg";
@@ -76,6 +77,7 @@ const BRANDS: Record<string, ProviderBrand> = {
   gemini: { key: "gemini", name: "Gemini", shortName: "GM", color: "#5684d1", logo: geminiLogo, logoMode: "artwork" },
   google: { key: "google", name: "Google", shortName: "G", color: "#4285f4", logo: googleLogo },
   groq: { key: "groq", name: "Groq", shortName: "GQ", color: "#f43e01", logo: groqLogo, logoMode: "artwork" },
+  hetzner: { key: "hetzner", name: "Hetzner", shortName: "HZ", color: "#d50c2d", logo: hetznerLogo, logoMode: "artwork" },
   huggingface: { key: "huggingface", name: "Hugging Face", shortName: "HF", color: "#d89b00", logo: huggingFaceLogo },
   kimi: { key: "kimi", name: "Kimi", shortName: "K", color: "#2f6bff", logo: kimiLogo, logoMode: "artwork" },
   kilo: { key: "kilo", name: "Kilo", shortName: "KL", color: "#cfca00", logo: kiloLogo, logoMode: "artwork" },
@@ -123,6 +125,7 @@ const PROVIDER_BRANDS: Record<string, string> = {
   "grok-api": "xai",
   "grok-oauth": "xai",
   groq: "groq",
+  hetzner: "hetzner",
   huggingface: "huggingface",
   "kimi-api": "kimi",
   "kimi-api-cn": "kimi",

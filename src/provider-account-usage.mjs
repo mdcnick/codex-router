@@ -1005,6 +1005,14 @@ async function openRouterAccount(fetchImpl) {
 
 async function accountUsageFor(providerId, fetchImpl) {
   try {
+    // The published Inference API has no account-usage endpoint. Keep quota
+    // headers when available, but never present local traffic as an account balance.
+    if (providerId === "hetzner") {
+      return withHeaderQuota(
+        providerId,
+        localOnly("Hetzner account usage is unavailable; showing router traffic"),
+      );
+    }
     if (providerId === "chutes") return await chutesAccount(fetchImpl);
     if (providerId === "deepseek") return await deepSeekAccount(fetchImpl);
     if (providerId === "kimi-api" || providerId === "kimi-api-cn") {

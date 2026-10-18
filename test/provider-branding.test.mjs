@@ -23,6 +23,17 @@ test("provider and model-maker branding covers remote and local catalog families
     assert.match(branding, new RegExp(`"${providerId}":`), `${providerId} falls back to a monogram`);
   }
 
+  assert.match(branding, /hetzner: "hetzner"/);
+  assert.match(branding, /assets\/providers\/hetzner\.png/);
+  assert.match(tray, /providerID == "hetzner" \{ return "hetzner" \}/);
+  assert.match(tray, /providerID == "hetzner" \{ return "Hetzner" \}/);
+  assert.match(sources, /hetzner\.com\/_resources\/themes\/hetzner/);
+  assert.match(traySources, /hetzner\.com\/_resources\/themes\/hetzner/);
+  const webIcon = await readFile(new URL("apps/control-center/src/assets/providers/hetzner.png", root));
+  const trayIcon = await readFile(new URL("apps/macos/ModelRouterTray/Sources/Resources/ProviderIcons/hetzner.png", root));
+  assert.deepEqual(webIcon, trayIcon);
+  assert.equal(webIcon.subarray(1, 4).toString(), "PNG");
+
   assert.match(branding, /muse spark[^\n]+BRANDS\.meta/);
   assert.match(branding, /ornith[^\n]+BRANDS\.deepreinforce/);
   assert.match(branding, /hy\(\?:3\|4\)[^\n]+BRANDS\.tencent/);

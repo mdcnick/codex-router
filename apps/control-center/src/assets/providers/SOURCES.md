@@ -51,3 +51,5 @@ not expose a practical standalone product mark. Unknown future providers and
 curated models use the control center's deterministic labeled monogram fallback.
 
 All names, logos, and trademarks remain the property of their respective owners.
+
+Hetzner: `hetzner.png` is the unmodified official favicon from https://www.hetzner.com/_resources/themes/hetzner/images/favicons/android-icon-192x192.png, discovered through https://www.hetzner.com/ on 2026-09-25.
